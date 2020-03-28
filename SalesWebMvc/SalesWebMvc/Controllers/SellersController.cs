@@ -16,7 +16,8 @@ namespace SalesWebMvc.Controllers
         private readonly SellerService _sellerService;
         private readonly DepartmentService _departmentService;
 
-        public SellersController(SellerService sellerService, DepartmentService departmentService) {
+        public SellersController(SellerService sellerService, DepartmentService departmentService)
+        {
             _sellerService = sellerService;
             _departmentService = departmentService;
         }
@@ -38,8 +39,14 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
             _sellerService.Insert(seller);
-            return RedirectToAction(nameof(Index)); //OU "INDEX"
+            return RedirectToAction(nameof(Index)); //OU "INDEX"            
         }
 
         public IActionResult Delete(int? id) // ? = Parametro opcional para não dar erro na entrada
@@ -83,7 +90,7 @@ namespace SalesWebMvc.Controllers
         }
 
         public IActionResult Edit(int? id) // ? = Parametro opcional para não dar erro na entrada
-        {
+        {           
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
@@ -104,6 +111,13 @@ namespace SalesWebMvc.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
+
             if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });

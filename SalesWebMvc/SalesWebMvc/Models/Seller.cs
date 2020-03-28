@@ -10,16 +10,25 @@ namespace SalesWebMvc.Models
     public class Seller
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "{0} obrigatório!")]
+        [StringLength(60, MinimumLength = 3, ErrorMessage = "Tamanho do {0} deve ser entre {2} e {1}.")] 
+        // CHAVES 0 PEGA O NOME DA PROPRIEDADE, 2 O TAMANHO MAXIMO E 1 O TAMANHO MINIMO
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "{0} obrigatório!")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Insira um e-mail válido")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "{0} obrigatório!")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)] // DEFINE QUE O ELEMENTO NA VIEW USARÁ SOMENTE A DATA SEM HORAS
         [Display(Name = "Birth Date")] // DEFINE O NOME QUE APARECERÁ NA VIEW
         public DateTime BirthDate { get; set; }
 
+        [Required(ErrorMessage = "{0} obrigatório!")]
+        [Range(100.0, 50000.0, ErrorMessage = "{0} deve estar entre {1} e {2}")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         [Display(Name = "Base Salary")]
         public double BaseSalary { get; set; }
