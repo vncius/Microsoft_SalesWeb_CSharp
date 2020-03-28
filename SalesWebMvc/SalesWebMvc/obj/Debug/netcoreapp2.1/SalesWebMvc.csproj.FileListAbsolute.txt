@@ -41,3 +41,4 @@ D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\SalesWebM
 D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\SalesWebMvc.dll
 D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\SalesWebMvc.pdb
 D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\SalesWebMvc.csproj.CopyComplete
+D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\SalesWebMvc.csprojAssemblyReference.cache

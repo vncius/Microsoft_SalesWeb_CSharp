@@ -1,8 +1,8 @@
 ﻿using SalesWebMvc.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesWebMvc.Data.Services
 {
@@ -15,9 +15,15 @@ namespace SalesWebMvc.Data.Services
             _context = context;
         }
 
-        public List<Department> FindAll()
+        public async Task<List<Department>> FindAllAsync()
         {
-            return _context.Department.OrderBy(n => n.Name).ToList();
+            // CHAMADA ASSINCRONA
+            return await _context.Department.OrderBy(n => n.Name).ToListAsync();
         }
+
+        //public List<Department> FindAll()
+        //{     //CHAMADA SINCRONA
+        //    return _context.Department.OrderBy(n => n.Name).ToList();   
+        //}
     }
 }

@@ -17,43 +17,50 @@ namespace SalesWebMvc.Data.Services
             _context = context;
         }
 
-        public List<Seller> FindAll()
+        public async Task<List<Seller>> FindAllAsync()
         {
-            return _context.Seller.ToList();
+            return await _context.Seller.ToListAsync();
         }
 
-        public void Insert(Seller obj)
-        {
+        public async Task InsertAsync(Seller obj)
+        {   // ASSSINCRONA
             _context.Add(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Seller FindById(int id)
+        //public void Insert(Seller obj)
+        //{  // SINCRONA
+        //    _context.Add(obj);
+        //    _context.SaveChanges();
+        //}
+
+        public async Task<Seller> FindByIdAsync(int id)
         {
             // EXEMPLO DE COMO TRAZER SUB - OBJETOS REALIZAR O JOIN - USANDO EAGER LOADING -ORM
 
-            return _context.Seller // PROCURA NA TABELA SELLER
+            return await _context.Seller // PROCURA NA TABELA SELLER
 
                 .Include(department => department.Department) // INCLUI O OBJETO DEPARTAMENTO DESSE SELLER
                     // .ThenInclude(department => department.Sellers) // ThenInclude BUSCA OS DADOS DO SUBOBJETO
 
-                .FirstOrDefault(obj => obj.Id == id); // PEGA O PRIMEIRO OU VAZIO QUE OBEDECE A CONDIÇÃO LINQ
+                .FirstOrDefaultAsync(obj => obj.Id == id); // PEGA O PRIMEIRO OU VAZIO QUE OBEDECE A CONDIÇÃO LINQ
 
 
             // OBS: PARA USAR O INCLUDE ELE FAZ PARTE DO "using Microsoft.EntityFrameworkCore;"
         }
 
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var obj = _context.Seller.Find(id);
+            var obj = await _context.Seller.FindAsync(id);
             _context.Seller.Remove(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Seller obj)
+        public async Task UpdateAsync(Seller obj)
         {
             // ANY VERIFICA SE EXISTE UM ELEMENTO NO BANCO USANDO LINQ ONDE X É O ELEMENTO NO BD
-            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            bool hasAny = await _context.Seller.AnyAsync(x => x.Id == obj.Id);
+            if (!hasAny)
             {
                 // CAPTURA POSSIVEL EXCESSÃO NA CAMADA DE BANCO DE DADOS E LANÇA NOVAMENTE COMO EXCEPTION DA CAMADA DE SERVIÇO
                 // MANTENDO ASSIM A ESTRUTURA MVC, FAZENDO COM QUE A CAMADA DE SERVIÇO SEMPRE RESPONDA AO CONTROLADOR
@@ -63,7 +70,7 @@ namespace SalesWebMvc.Data.Services
             try
             {
                 _context.Update(obj);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {
