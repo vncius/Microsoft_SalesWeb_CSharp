@@ -40,7 +40,7 @@ namespace SalesWebMvc.Data.Services
 
             return await _context.Seller // PROCURA NA TABELA SELLER
 
-                .Include(department => department.Department) // INCLUI O OBJETO DEPARTAMENTO DESSE SELLER
+                .Include(department => department.Department) // // NO SQL O INCLUDE FAZ UM JOIN
                     // .ThenInclude(department => department.Sellers) // ThenInclude BUSCA OS DADOS DO SUBOBJETO
 
                 .FirstOrDefaultAsync(obj => obj.Id == id); // PEGA O PRIMEIRO OU VAZIO QUE OBEDECE A CONDIÇÃO LINQ

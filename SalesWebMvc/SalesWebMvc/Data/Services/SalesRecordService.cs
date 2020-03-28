@@ -32,10 +32,35 @@ namespace SalesWebMvc.Data.Services
             return await _context.SalesRecord
                 // OUTRA FORMA DE EXECUTAR CONDIÇÃO CASO POSSUA VALOR É USANDO O WHERE 
                 .Where(sales => minDate.HasValue ? sales.Date >= minDate : sales.Date >= DateTime.MinValue)
-                .Where(sales => maxDate.HasValue ? sales.Date <= maxDate : sales.Date <= DateTime.Now )                 
-                .Include(x => x.Seller)
-                .Include(x => x.Seller.Department)                
+                .Where(sales => maxDate.HasValue ? sales.Date <= maxDate : sales.Date <= DateTime.Now )
+
+                // NO SQL O INCLUDE FAZ UM JOIN
+                .Include(sales => sales.Seller) 
+                    // FAZ UM JOIN PARA CRIAR SUB-OBJETOS
+                    .ThenInclude(seller => seller.Department)
+
+                //ORDENA A LISTA DE FORMA DESCENDENTE
                 .OrderByDescending(x => x.Date)
+                .ToListAsync();
+        }
+
+        public async Task<List<IGrouping<Department, SalesRecord>>> FindByDateGroupingAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            
+            return await _context.SalesRecord
+                // OUTRA FORMA DE EXECUTAR CONDIÇÃO CASO POSSUA VALOR É USANDO O WHERE 
+                .Where(sales => minDate.HasValue ? sales.Date >= minDate : sales.Date >= DateTime.MinValue)
+                .Where(sales => maxDate.HasValue ? sales.Date <= maxDate : sales.Date <= DateTime.Now)
+
+                // NO SQL O INCLUDE FAZ UM JOIN
+                .Include(sales => sales.Seller)
+                    // FAZ UM JOIN PARA CRIAR SUB-OBJETOS
+                    .ThenInclude(seller => seller.Department) 
+
+                //ORDENA A LISTA DE FORMA DESCENDENTE
+                .OrderByDescending(sales => sales.Date)
+                // GROUP BY RETORNA LISTA DO TIPO IGROUPING, É NECESSÁRIO ALTERAR O RETORNO
+                .GroupBy(x => x.Seller.Department) 
                 .ToListAsync();
         }
     }
