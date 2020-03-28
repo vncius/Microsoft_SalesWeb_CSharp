@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesWebMvc.Data.Services
 {
@@ -28,7 +29,17 @@ namespace SalesWebMvc.Data.Services
 
         public Seller FindById(int id)
         {
-            return _context.Seller.FirstOrDefault(obj => obj.Id == id);
+            // EXEMPLO DE COMO TRAZER SUB - OBJETOS REALIZAR O JOIN - USANDO EAGER LOADING -ORM
+
+            return _context.Seller // PROCURA NA TABELA SELLER
+
+                .Include(department => department.Department) // INCLUI O OBJETO DEPARTAMENTO DESSE SELLER
+                    // .ThenInclude(department => department.Sellers) // ThenInclude BUSCA OS DADOS DO SUBOBJETO
+
+                .FirstOrDefault(obj => obj.Id == id); // PEGA O PRIMEIRO OU VAZIO QUE OBEDECE A CONDIÇÃO LINQ
+
+
+            // OBS: PARA USAR O INCLUDE ELE FAZ PARTE DO "using Microsoft.EntityFrameworkCore;"
         }
 
         public void Remove(int id)

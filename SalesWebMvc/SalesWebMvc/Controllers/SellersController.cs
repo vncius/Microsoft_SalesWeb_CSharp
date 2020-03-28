@@ -56,10 +56,27 @@ namespace SalesWebMvc.Controllers
             return View(obj);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             _sellerService.Remove(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value); // Como o parametro é opcional deve-se o usar o value
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
         }
     }
 }
