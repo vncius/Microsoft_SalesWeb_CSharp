@@ -31,13 +31,35 @@ namespace SalesWebMvc.Controllers
             var viewModel = new SellerFormViewModel { Departments = departments };
             return View(viewModel);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
         {
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index)); //OU "INDEX"
+        }
+
+        public IActionResult Delete(int? id) // ? = Parametro opcional
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value); // Como o parametro é opcional deve-se o usar o value
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
