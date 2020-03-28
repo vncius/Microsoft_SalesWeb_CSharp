@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SalesWebMvc.Data.Services.Exceptions;
 
 namespace SalesWebMvc.Data.Services
 {
@@ -47,6 +48,29 @@ namespace SalesWebMvc.Data.Services
             var obj = _context.Seller.Find(id);
             _context.Seller.Remove(obj);
             _context.SaveChanges();
+        }
+
+        public void Update(Seller obj)
+        {
+            // ANY VERIFICA SE EXISTE UM ELEMENTO NO BANCO USANDO LINQ ONDE X É O ELEMENTO NO BD
+            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            {
+                // CAPTURA POSSIVEL EXCESSÃO NA CAMADA DE BANCO DE DADOS E LANÇA NOVAMENTE COMO EXCEPTION DA CAMADA DE SERVIÇO
+                // MANTENDO ASSIM A ESTRUTURA MVC, FAZENDO COM QUE A CAMADA DE SERVIÇO SEMPRE RESPONDA AO CONTROLADOR
+                throw new NotFoundException("Id not found");
+            }
+
+            try
+            {
+                _context.Update(obj);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // CAPTURA POSSIVEL EXCESSÃO NA CAMADA DE BANCO DE DADOS E LANÇA NOVAMENTE COMO EXCEPTION DA CAMADA DE SERVIÇO
+                // MANTENDO ASSIM A ESTRUTURA MVC, FAZENDO COM QUE A CAMADA DE SERVIÇO SEMPRE RESPONDA AO CONTROLADOR
+                throw new DbConcurrencyException(ex.Message);
+            }
         }
     }
 }

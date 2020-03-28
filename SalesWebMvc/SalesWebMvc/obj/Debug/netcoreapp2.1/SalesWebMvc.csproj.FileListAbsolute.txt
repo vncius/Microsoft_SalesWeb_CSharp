@@ -41,3 +41,4 @@ D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\SalesWebM
 D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\Razor\Views\Sellers\Delete.cshtml.g.cs
 D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\SalesWebMvc.csprojAssemblyReference.cache
 D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\Razor\Views\Sellers\Details.cshtml.g.cs
+D:\ESTUDOS\SalesWebMvc\SalesWebMvc\SalesWebMvc\obj\Debug\netcoreapp2.1\Razor\Views\Sellers\Edit.cshtml.g.cs
