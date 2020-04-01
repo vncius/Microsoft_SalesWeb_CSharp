@@ -259,3 +259,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+SalesWebMvc/SalesWebMvc/bin/Debug/netcoreapp2.1/SalesWebMvc.pdb
+SalesWebMvc/SalesWebMvc/bin/Debug/netcoreapp2.1/SalesWebMvc.dll
+SalesWebMvc/.vs/SalesWebMvc/config/applicationhost.config
+SalesWebMvc/SalesWebMvc/bin/Debug/netcoreapp2.1/SalesWebMvc.runtimeconfig.dev.json
+*.dll
