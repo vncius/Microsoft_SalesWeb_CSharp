@@ -1,0 +1,123 @@
+﻿@model SalesWebMvc.Models.Department
+
+@using SalesWebMvc.Models.Enums
+
+@{
+    Object attributes = null;
+
+    if (ViewData["acao"].Equals(StatusAcoes.DETAILS) || ViewData["acao"].Equals(StatusAcoes.DELETE))
+    {
+        attributes = new
+        {
+            @class = "form-control",
+            @readonly = "@readonly"
+        };
+    }
+    else
+    {
+        attributes = new
+        {
+            @class = "form-control",
+            @required = "required",
+        };
+    }
+}
+
+<br />
+
+<div class="container-fluid">
+    <div class="card">
+        <h3 class="card-header">@ViewData["Title"]</h3>
+        <form asp-action="@ViewData["acaoForm"]" class="form-group">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+
+                            @Html.TextBoxFor(item => item.Name, attributes)
+
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                @if (ViewData["acao"].Equals(StatusAcoes.EDIT))
+                {
+                    <input type="submit" value="Edit" class="btn btn-warning" />
+                }
+                else if (ViewData["acao"].Equals(StatusAcoes.DELETE))
+                {
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                }
+                else if (ViewData["acao"].Equals(StatusAcoes.CREATE))
+                {
+                    <input type="submit" value="Create" class="btn btn-success" />
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@*<div class="modal-content">
+        <div class="modal-header">
+            <div class="row">
+                <div class="col-xs-10">
+                    <h3 class="modal-title"</h3>
+                </div>
+                <div class="col-xs-2">
+                    <form asp-action="Index">
+                        <button type="submit" asp-action="Index" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="@ViewData["acaoForm"]">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+
+                            @Html.TextBoxFor(item => item.Name, attributes)
+
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                @if (ViewData["acao"].Equals(StatusAcoes.EDIT))
+                {
+                    <input type="submit" value="Edit" data-value="@Model.Id" class="btn btn-warning" />
+                }
+                else if (ViewData["acao"].Equals(StatusAcoes.DELETE))
+                {
+                    <input type="submit" value="Delete" data-value="@Model.Id" class="btn btn-danger" />
+                }
+                else if (ViewData["acao"].Equals(StatusAcoes.CREATE))
+                {
+                    <input type="submit" value="Create" data-value="@Model.Id" class="btn btn-success" />
+                }
+            </div>
+
+        </form>
+    </div>*@
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}*@
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="conteudo-modal"></div>
+</div>
