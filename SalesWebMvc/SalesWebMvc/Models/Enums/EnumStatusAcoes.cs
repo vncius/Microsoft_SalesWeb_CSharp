@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SalesWebMvc.Models.Enums
 {
-    public enum StatusAcoes
+    public enum EnumStatusAcoes
     {
         CREATE,
         DELETE,

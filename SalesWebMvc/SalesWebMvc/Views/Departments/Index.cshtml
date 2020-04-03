@@ -5,12 +5,15 @@
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    @Html.ActionLink(
-        "Create New",
-        "_viewAcoes",
-        new { acao = StatusAcoes.CREATE },
-        new { @class = "btn btn-primary" }
-    )
+    <i class="material-icons">edit</i>
+    <span value="Create" data-acao="@EnumStatusAcoes.CREATE" class="glyphicon glyphicon-plus edit" aria-hidden="true"></span>
+    <input type="button" value="Create" data-acao="@EnumStatusAcoes.CREATE" class="btn btn-primary edit" />
+    @*@Html.ActionLink(
+            "Create New",
+            "_viewAcoes",
+            new { acao = EnumStatusAcoes.CREATE },
+            new { @class = "btn btn-primary create" }
+        )*@
 </p>
 <table class="table table-hover table-striped" style="text-align:center">
     <thead class="bg-dark" style="color:azure">
@@ -30,53 +33,41 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @*<input type="button" value="Edit" data-value="@item.Id" class="btn btn-primary btn-edit" />
-        <input type="button" value="Delete" data-value="@item.Id" class="btn btn-primary btn-delete" />
-        <input type="button" value="Details" data-value="@item.Id" class="btn btn-primary btn-details" />*@
 
-                    @Html.ActionLink(
-                              "edit",
-                              "_viewAcoes",
-                              new { id = @item.Id, acao = StatusAcoes.EDIT },
-                              new { @class = "btn btn-primary material-icons" }
-                          )
+                    <input type="button" value="Edit" data-value="@item.Id" data-acao="@EnumStatusAcoes.EDIT" class="btn btn-primary edit" />
+                    <input type="button" value="Delete" data-value="@item.Id" data-acao="@EnumStatusAcoes.DELETE" class="btn btn-primary delete" />
+                    <input type="button" value="Details" data-value="@item.Id" data-acao="@EnumStatusAcoes.DETAILS" class="btn btn-primary details" />
+                    <span class="material-icons">visibility</span>
+                    @*@Html.ActionLink(
+                  "edit",
+                  "_viewAcoes",
+                  new { id = @item.Id, EnumAcao = EnumStatusAcoes.EDIT },
+                  new { @class = "btn btn-primary material-icons delete" }
+              )
 
-                    @Html.ActionLink(
-                        "delete_forever",
-                        "_viewAcoes",
-                        new { id = @item.Id, acao = StatusAcoes.DELETE },
-                        new { @class = "btn btn-primary material-icons" }
-                    )
+        @Html.ActionLink(
+            "delete_forever",
+            "_viewAcoes",
+            new { id = @item.Id, EnumAcao = EnumStatusAcoes.DELETE },
+            new { @class = "btn btn-primary material-icons edit" }
+        )
 
-                    @Html.ActionLink(
-                        "visibility",
-                        "_viewAcoes",
-                        new { id = @item.Id, acao = StatusAcoes.DETAILS },
-                        new { @class = "btn btn-primary material-icons" }
-                    )
+        @Html.ActionLink(
+            "visibility",
+            "_viewAcoes",
+            new { id = @item.Id, EnumAcao = EnumStatusAcoes.DETAILS },
+            new { @class = "btn btn-primary material-icons details" }
+        )*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@*<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="conteudo-modal"></div>
-    </div>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-    <script>
-        $('document').ready(function () {
-            $('.btn-edit').click(function () {
-                $(".conteudo-modal").load("/Departments/_viewAcoes/" + $(this).attr('data-value') + "?acao=EDIT");
-                $('#exampleModal').modal("show");
-            });
+</div>
 
-            $('.btn-delete').click(function () {
-                alert('teste');
-            });
-
-            $('.btn-details').click(function () {
-                alert('details');
-            });
-        });
-    </script>*@
+@section Scripts {
+    <script src="~/js/Departments/index.js"></script>
+}

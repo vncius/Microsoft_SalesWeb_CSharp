@@ -5,7 +5,7 @@
 @{
     Object attributes = null;
 
-    if (ViewData["acao"].Equals(StatusAcoes.DETAILS) || ViewData["acao"].Equals(StatusAcoes.DELETE))
+    if (ViewData["acao"].Equals(EnumStatusAcoes.DETAILS) || ViewData["acao"].Equals(EnumStatusAcoes.DELETE))
     {
         attributes = new
         {
@@ -18,49 +18,77 @@
         attributes = new
         {
             @class = "form-control",
-            @required = "required",
+            //@required = "required",
         };
     }
 }
 
 <br />
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="container-fluid">
 
-<div class="container-fluid">
-    <div class="card">
-        <h3 class="card-header">@ViewData["Title"]</h3>
-        <form asp-action="@ViewData["acaoForm"]" class="form-group">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <input type="hidden" asp-for="Id" />
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="Name" class="control-label"></label>
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">@ViewData["Title"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-                            @Html.TextBoxFor(item => item.Name, attributes)
+            <form asp-action="@ViewData["acaoForm"]" class="form-group">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="hidden" asp-for="Id" />
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label for="@nameof(Model.Name)" class="control-label"></label>
 
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                                @Html.TextBoxFor(item => item.Name, attributes)
+
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer text-muted">
-                @if (ViewData["acao"].Equals(StatusAcoes.EDIT))
-                {
-                    <input type="submit" value="Edit" class="btn btn-warning" />
-                }
-                else if (ViewData["acao"].Equals(StatusAcoes.DELETE))
-                {
-                    <input type="submit" value="Delete" class="btn btn-danger" />
-                }
-                else if (ViewData["acao"].Equals(StatusAcoes.CREATE))
-                {
-                    <input type="submit" value="Create" class="btn btn-success" />
-                }
-            </div>
-        </form>
+                <div class="modal-footer">
+                    @if (ViewData["acao"].Equals(EnumStatusAcoes.EDIT))
+                    {
+                        <button type="submit" class="btn btn-warning" style="text-align:center">
+                            <div class="row">
+                                <div class="col">Save</div>
+                                <div class="col"><i class="material-icons">save</i></div>
+                            </div>
+                        </button>
+                    }
+                    else if (ViewData["acao"].Equals(EnumStatusAcoes.DELETE))
+                    {
+                        <button type="submit" class="btn btn-warning" style="text-align:center">
+                            <div class="row">
+                                <div class="col">Delete</div>
+                                <div class="col"><span class="material-icons">delete_forever</span></div>
+                            </div>
+                        </button>
+                    }
+                    else if (ViewData["acao"].Equals(EnumStatusAcoes.CREATE))
+                    {
+                        <button type="submit" class="btn btn-warning" style="text-align:center">
+                            <div class="row">
+                                <div class="col">Register</div>
+                                <div class="col"><i class="material-icons">save</i></div>
+                            </div>
+                        </button>
+                    }
+                </div>
+            </form>
+
+        </div>
     </div>
+
 </div>
+
+
+
 
 
 @*<div class="modal-content">
@@ -115,9 +143,5 @@
     </div>*@
 
 @*@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}*@
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="conteudo-modal"></div>
-</div>
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }*@

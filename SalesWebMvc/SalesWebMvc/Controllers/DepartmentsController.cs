@@ -27,14 +27,14 @@ namespace SalesWebMvc.Controllers
             return View(await _departmentService.FindAllAsync());
         }
 
-        public async Task<IActionResult> _viewAcoes(int? id, StatusAcoes acao)
+        public async Task<IActionResult> _ViewAcoes(int? id, EnumStatusAcoes EnumAcao)
         {
             if (!id.HasValue)
             {
-                if (acao.Equals(StatusAcoes.CREATE))
+                if (EnumAcao.Equals(EnumStatusAcoes.CREATE))
                 {
                     ViewData["Title"] = "Create";
-                    ViewData["acao"] = StatusAcoes.CREATE;
+                    ViewData["acao"] = EnumStatusAcoes.CREATE;
                     ViewData["acaoForm"] = string.Format(nameof(Create));
                     return View();
                 }
@@ -46,25 +46,26 @@ namespace SalesWebMvc.Controllers
 
                 if (!viewModel.Equals(null))
                 {
-                    if (acao.Equals(StatusAcoes.EDIT))
+                    if (EnumAcao.Equals(EnumStatusAcoes.EDIT))
                     {
                         ViewData["Title"] = "Editar department";
-                        ViewData["acao"] = StatusAcoes.EDIT;
+                        ViewData["acao"] = EnumStatusAcoes.EDIT;
                         ViewData["acaoForm"] = string.Format(nameof(Edit));
                     }
-
-                    if (acao.Equals(StatusAcoes.DELETE))
+                    else if (EnumAcao.Equals(EnumStatusAcoes.DELETE))
                     {
                         ViewData["Title"] = "Delete department";
-                        ViewData["acao"] = StatusAcoes.DELETE;
+                        ViewData["acao"] = EnumStatusAcoes.DELETE;
                         ViewData["acaoForm"] = string.Format(nameof(Delete));
                     }
-
-                    if (acao.Equals(StatusAcoes.DETAILS))
+                    else if (EnumAcao.Equals(EnumStatusAcoes.DETAILS))
                     {
                         ViewData["Title"] = "Details department";
-                        ViewData["acao"] = StatusAcoes.DETAILS;
+                        ViewData["acao"] = EnumStatusAcoes.DETAILS;
                         ViewData["acaoForm"] = "#";
+                    }
+                    else {
+                        return NotFound();
                     }
 
                     return View(viewModel);
@@ -78,25 +79,23 @@ namespace SalesWebMvc.Controllers
             return NotFound();
         }
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
         {
             if (!ModelState.IsValid)
             {
                 ViewData["Title"] = "Create";
-                ViewData["acao"] = StatusAcoes.CREATE;
+                ViewData["acao"] = EnumStatusAcoes.CREATE;
                 ViewData["acaoForm"] = string.Format(nameof(Create));
 
-                return View(nameof(_viewAcoes), department);
+                return View(nameof(_ViewAcoes), department);
             }
 
-             await _departmentService.AddDepartment(department);
+            await _departmentService.AddDepartment(department);
             return RedirectToAction(nameof(Index));
 
         }
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
         {
@@ -108,9 +107,9 @@ namespace SalesWebMvc.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["Title"] = "Editar department";
-                ViewData["acao"] = StatusAcoes.EDIT;
+                ViewData["acao"] = EnumStatusAcoes.EDIT;
                 ViewData["acaoForm"] = string.Format(nameof(Edit));
-                return View(nameof(_viewAcoes), department);
+                return View(nameof(_ViewAcoes), department);
             }
 
 
@@ -125,7 +124,6 @@ namespace SalesWebMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
