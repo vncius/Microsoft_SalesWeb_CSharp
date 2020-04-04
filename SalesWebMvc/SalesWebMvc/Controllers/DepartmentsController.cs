@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 using SalesWebMvc.Data.Services;
@@ -12,7 +9,7 @@ using SalesWebMvc.Models.Enums;
 
 namespace SalesWebMvc.Controllers
 {
-    public class DepartmentsController : Controller
+    public class DepartmentsController : ControladorCrudAbstrato
     {
         private readonly DepartmentService _departmentService;
 
@@ -24,59 +21,58 @@ namespace SalesWebMvc.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Departments";
+            ViewData["ehModelInvalid"] = false;
             return View(await _departmentService.FindAllAsync());
         }
 
         public async Task<IActionResult> _ViewAcoes(int? id, EnumStatusAcoes EnumAcao)
         {
-            if (!id.HasValue)
-            {
-                if (EnumAcao.Equals(EnumStatusAcoes.CREATE))
-                {
-                    ViewData["Title"] = "Create";
-                    ViewData["acao"] = EnumStatusAcoes.CREATE;
-                    ViewData["acaoForm"] = string.Format(nameof(Create));
-                    return View();
-                }
-            }
+            var action = ObtenhaActionController(EnumAcao);
 
             if (id.HasValue)
             {
                 var viewModel = await _departmentService.FindById(id);
 
-                if (!viewModel.Equals(null))
+                if (viewModel.Equals(null))
                 {
-                    if (EnumAcao.Equals(EnumStatusAcoes.EDIT))
-                    {
-                        ViewData["Title"] = "Editar department";
-                        ViewData["acao"] = EnumStatusAcoes.EDIT;
-                        ViewData["acaoForm"] = string.Format(nameof(Edit));
-                    }
-                    else if (EnumAcao.Equals(EnumStatusAcoes.DELETE))
-                    {
-                        ViewData["Title"] = "Delete department";
-                        ViewData["acao"] = EnumStatusAcoes.DELETE;
-                        ViewData["acaoForm"] = string.Format(nameof(Delete));
-                    }
-                    else if (EnumAcao.Equals(EnumStatusAcoes.DETAILS))
-                    {
-                        ViewData["Title"] = "Details department";
-                        ViewData["acao"] = EnumStatusAcoes.DETAILS;
-                        ViewData["acaoForm"] = "#";
-                    }
-                    else {
-                        return NotFound();
-                    }
-
-                    return View(viewModel);
+                    throw new ApplicationException(String.Format("Id informamado ({0}) não existe na base de dados!", id));
                 }
-                else
+
+                if (ObtenhaViewDatas(ViewData, EnumAcao, id, action, true, true).Count > 0)
                 {
-                    throw new ApplicationException("Id informamado ({0}) não existe na base de dados!");
+                    return PartialView(viewModel);
                 }
             }
+            else 
+            {
+                if (ObtenhaViewDatas(ViewData, EnumAcao, id, action, false, false).Count > 0)
+                {
+                    return PartialView();
+                }                
+            }
 
-            return NotFound();
+            throw new ApplicationException("Falha ao obter dados para abertura da tela!");
+        }
+
+        private string ObtenhaActionController(EnumStatusAcoes enumAcao)
+        {
+            if (enumAcao.Equals(EnumStatusAcoes.CREATE))
+            {
+                return nameof(Create);
+            }
+            else if (enumAcao.Equals(EnumStatusAcoes.EDIT))
+            {
+                return nameof(Edit);
+            }
+            else if (enumAcao.Equals(EnumStatusAcoes.DELETE))
+            {
+                return nameof(Delete);
+            }
+            else if (enumAcao.Equals(EnumStatusAcoes.DETAILS))
+            {
+                return "#";
+            }
+            else { return null; }
         }
 
         [ValidateAntiForgeryToken]
@@ -87,7 +83,7 @@ namespace SalesWebMvc.Controllers
                 ViewData["Title"] = "Create";
                 ViewData["acao"] = EnumStatusAcoes.CREATE;
                 ViewData["acaoForm"] = string.Format(nameof(Create));
-
+                ViewData["ehModelInvalid"] = true;
                 return View(nameof(_ViewAcoes), department);
             }
 
@@ -109,9 +105,9 @@ namespace SalesWebMvc.Controllers
                 ViewData["Title"] = "Editar department";
                 ViewData["acao"] = EnumStatusAcoes.EDIT;
                 ViewData["acaoForm"] = string.Format(nameof(Edit));
-                return View(nameof(_ViewAcoes), department);
+                ViewData["ehModelInvalid"] = true;
+                return View(nameof(Index), department);
             }
-
 
             try
             {
@@ -127,6 +123,7 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            ViewData["ehModelInvalid"] = false;
             await _departmentService.Delete(id);
             return RedirectToAction(nameof(Index));
         }

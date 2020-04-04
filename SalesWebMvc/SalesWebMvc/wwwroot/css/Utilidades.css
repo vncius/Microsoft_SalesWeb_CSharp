@@ -1,0 +1,64 @@
+﻿/*############################### UTILIDADES ICONS ##################################*/
+.btn-crud-table {
+    height: 30px;
+    width: 35px;
+    text-align: center;
+}
+
+/*############################### UTILIDADES TABLE ##################################*/
+.div-table-scroll-padrao {
+    border-radius: 10px;
+    /*border-color: darkgray ;
+    border-style: groove;*/
+    max-width: 100%;
+    overflow-y: scroll;
+    background: rgba(0,0,0,.03) !important;
+    background: white !important;
+    margin-bottom: 10px;
+}
+
+table tbody .td-simple-line {
+    padding: 0rem !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+table .coluna-btn-acoes {
+    width: 150px;
+}
+
+@media only screen and (max-height: 1920px) {
+    .div-table-scroll-padrao {
+        height: 400px;
+    }
+}
+
+@media only screen and (max-height: 900px) {
+    .div-table-scroll-padrao {
+        height: 400px;
+    }
+}
+
+@media only screen and (max-height: 800px) {
+    .div-table-scroll-padrao {
+        height: 350px;
+    }
+}
+
+@media only screen and (max-height: 700px) {
+    .div-table-scroll-padrao {
+        height: 300px;
+    }
+}
+
+@media only screen and (max-height: 600px) {
+    .div-table-scroll-padrao {
+        height: 200px;
+    }
+}
+
+@media only screen and (max-height: 500px) {
+    .div-table-scroll-padrao {
+        height: 100px;
+    }
+}

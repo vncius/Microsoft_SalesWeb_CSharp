@@ -1,0 +1,7 @@
+﻿table .coluna-descricao-departamento {
+    text-align: left!important;    
+}
+
+table tbody .coluna-descricao-departamento {
+    padding-left: 20px !important;
+}

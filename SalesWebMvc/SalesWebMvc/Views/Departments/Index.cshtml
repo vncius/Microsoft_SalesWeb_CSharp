@@ -1,73 +1,67 @@
 ﻿@model IEnumerable<SalesWebMvc.Models.Department>
 
-@using SalesWebMvc.Models.Enums
+<div class="card">
+    <div class="card-header text-center">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="card-body">
+        <div>
+            <div class="div-table-scroll-padrao">
+                <table class="table table-hover table-striped" style="text-align:center">
+                    <thead class="bg-dark" style="color:azure">
+                        <tr>
+                            <th class="coluna-descricao-departamento">
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th class="coluna-btn-acoes"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="td-simple-line coluna-descricao-departamento">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td class="td-simple-line coluna-btn-acoes">
+                                    <button type="button" data-value="@item.Id" 
+                                            data-controller="Departments" data-acao="@EnumStatusAcoes.EDIT" class="btn btn-warning btn-crud btn-crud-table">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" data-value="@item.Id" 
+                                            data-controller="Departments" data-acao="@EnumStatusAcoes.DELETE" class="btn btn-danger btn-crud btn-crud-table" >
+                                        <span class="material-icons">delete_forever</span>
+                                    </button>
+                                    <button type="button"  data-value="@item.Id" 
+                                            data-controller="Departments" data-acao="@EnumStatusAcoes.DETAILS" class="btn btn-primary btn-crud btn-crud-table">
+                                        <span class="material-icons">visibility</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <p>
+            <button type="button" data-acao="@EnumStatusAcoes.CREATE" 
+                    data-controller="Departments" class="btn btn-primary btn-crud">Create</button>
+        </p>
+    </div>
+</div>
 
-<h2>@ViewData["Title"]</h2>
 
-<p>
-    <i class="material-icons">edit</i>
-    <span value="Create" data-acao="@EnumStatusAcoes.CREATE" class="glyphicon glyphicon-plus edit" aria-hidden="true"></span>
-    <input type="button" value="Create" data-acao="@EnumStatusAcoes.CREATE" class="btn btn-primary edit" />
-    @*@Html.ActionLink(
-            "Create New",
-            "_viewAcoes",
-            new { acao = EnumStatusAcoes.CREATE },
-            new { @class = "btn btn-primary create" }
-        )*@
-</p>
-<table class="table table-hover table-striped" style="text-align:center">
-    <thead class="bg-dark" style="color:azure">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-
-                    <input type="button" value="Edit" data-value="@item.Id" data-acao="@EnumStatusAcoes.EDIT" class="btn btn-primary edit" />
-                    <input type="button" value="Delete" data-value="@item.Id" data-acao="@EnumStatusAcoes.DELETE" class="btn btn-primary delete" />
-                    <input type="button" value="Details" data-value="@item.Id" data-acao="@EnumStatusAcoes.DETAILS" class="btn btn-primary details" />
-                    <span class="material-icons">visibility</span>
-                    @*@Html.ActionLink(
-                  "edit",
-                  "_viewAcoes",
-                  new { id = @item.Id, EnumAcao = EnumStatusAcoes.EDIT },
-                  new { @class = "btn btn-primary material-icons delete" }
-              )
-
-        @Html.ActionLink(
-            "delete_forever",
-            "_viewAcoes",
-            new { id = @item.Id, EnumAcao = EnumStatusAcoes.DELETE },
-            new { @class = "btn btn-primary material-icons edit" }
-        )
-
-        @Html.ActionLink(
-            "visibility",
-            "_viewAcoes",
-            new { id = @item.Id, EnumAcao = EnumStatusAcoes.DETAILS },
-            new { @class = "btn btn-primary material-icons details" }
-        )*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalAcoes" tabindex="-1" role="dialog" aria-labelledby="modalAcoes" aria-hidden="true">
 
 </div>
 
 @section Scripts {
     <script src="~/js/Departments/index.js"></script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Department//Index.css" />
 }
